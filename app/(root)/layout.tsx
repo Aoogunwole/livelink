@@ -1,5 +1,16 @@
 import StreamVideoProvider from '@/provider/StreamClientProvider'
+import { Metadata } from 'next'
 import React, { ReactNode } from 'react'
+
+
+
+export const metadata: Metadata = {
+  title: 'Livelink',
+  description: 'Video web Applcation',
+  icons: {
+    icon: '/icon/logo.svg'
+  }
+}
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
