@@ -6,7 +6,7 @@ import React, { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Livelink',
-  description: 'Video web Applcation',
+  description: 'Video Web Applcation',
   icons: {
     icon: '/icon/logo.svg'
   }

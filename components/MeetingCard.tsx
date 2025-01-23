@@ -4,8 +4,9 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { avatarImages } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
+import { SignedIn, UserButton } from "@clerk/nextjs";
+import { useState } from "react";
 
 
 interface MeetingCardProps {
@@ -30,6 +31,8 @@ const MeetingCard = ({
   buttonText,
 }: MeetingCardProps) => {
   const { toast } = useToast();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Set to `true` to disable the button
+
 
   return (
     <section className="flex min-h-[258px] w-full flex-col justify-between rounded-[14px] bg-dark-1 px-5 py-8 xl:max-w-[568px]">
@@ -44,19 +47,15 @@ const MeetingCard = ({
       </article>
       <article className={cn("flex justify-center relative", {})}>
         <div className="relative flex w-full max-sm:hidden">
-          {avatarImages.map((img, index) => (
-            <Image
-              key={index}
-              src={img}
-              alt="attendees"
-              width={40}
-              height={40}
-              className={cn("rounded-full", { absolute: index > 0 })}
-              style={{ top: 0, left: index * 28 }}
-            />
-          ))}
-          <div className="flex-center absolute left-[136px] size-10 rounded-full border-[5px] border-dark-3 bg-dark-4">
-            +5
+          <div className="flex items-center">
+          <SignedIn>
+          <div style={{ pointerEvents: isButtonDisabled ? 'none' : 'auto' }}>
+            <UserButton />
+          </div>
+        </SignedIn>
+          <div className="flex-center absolute left-[25px] top-[-6px] size-10 rounded-full border-[5px] border-dark-3 bg-dark-4">
+            +1
+          </div>
           </div>
         </div>
         {!isPreviousMeeting && (

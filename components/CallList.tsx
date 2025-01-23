@@ -8,7 +8,9 @@ import MeetingCard from './MeetingCard';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
+const CallList = ({ type, onCountChange, }: { type: 'ended' | 'upcoming' | 'recordings';
+  onCountChange?: (count: number) => void;
+ }) => {
   const router = useRouter();
   const { endedCalls, upcomingCalls, callRecordings, isLoading } =
     useGetCalls();
@@ -41,6 +43,13 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   };
 
   useEffect(() => {
+    if (type === 'upcoming' && upcomingCalls) {
+      if (onCountChange) {
+        onCountChange(upcomingCalls.length);
+      }
+    }
+
+
     const fetchRecordings = async () => {
       const callData = await Promise.all(
         callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
@@ -56,12 +65,15 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
     if (type === 'recordings') {
       fetchRecordings();
     }
-  }, [type, callRecordings]);
+  }, [type, callRecordings, upcomingCalls, onCountChange]);
 
   if (isLoading) return <Loader />;
 
   const calls = getCalls();
   const noCallsMessage = getNoCallsMessage();
+
+ 
+  
 
   return (
     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
